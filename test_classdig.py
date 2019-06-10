@@ -28,5 +28,6 @@ class TestFatMatriz(unittest.TestCase):
         self.assertAlmostEqual(c,-0.554700196225229,15)
         self.assertAlmostEqual(s,0.832050294337844,15)
 
+
 if __name__ == '__main__':
     unittest.main() 
