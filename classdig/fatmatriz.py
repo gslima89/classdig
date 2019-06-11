@@ -1,5 +1,8 @@
+
 from math import sqrt
-from random import random
+
+from classdig import exemplos
+from classdig import helper
 
 
 def _c_s(w_ik, w_jk):
@@ -50,59 +53,17 @@ def sol_lin_system(w, b, n, m):
     return x
 
 
-def _print_matrix(w,n,m):
-
-    for i in range(n):
-        print('|', end=' ')
-        for j in range(m):
-            print('{0:.4f}'.format(w[i][j]), end=' ')
-        print('|')
-    print('')
-
-
-def _random_matrix(n,m):
-    return [[10*random() for _ in range(m)] for _ in range(n)]
-
-
-def w_exemplo_a(n,m):
-    w = [[0 for _ in range(m)] for _ in range(n)]
-    for i in range(n):
-        for j in range(m):
-            if (i == j):
-                w[i][j] = 2
-            elif (abs(i-j) == 1):
-                w[i][j] = 1
-    return w
-
-
-def b_exemplo_a(n):
-    return [[1] for _ in range(n)]
-
-
-def w_exemplo_b(n,m):
-    w = [[0 for _ in range(m)] for _ in range(n)]
-    for i in range(n):
-        for j in range(m):
-            if (abs(i-j) <= 4):
-                w[i][j] = 1/(i+j+1)
-    return w
-
-
-def b_exemplo_b(n):
-    return [[i+1] for i in range(n)]
-
-
 if __name__ == "__main__":
     print('Testing...')
     n,m = 20,17
-    #w = _random_matrix(n,m)
-    #b = _random_matrix(n,1)
-    #w = w_exemplo_a(n,m)
-    #b = b_exemplo_a(n)
-    w = w_exemplo_b(n,m)
-    b = b_exemplo_b(n)
-    #_print_matrix(w,n,m)
-    #_print_matrix(b,n,1)
+    #w = helper.random_matrix(n,m)
+    #b = helper.random_matrix(n,1)
+    #w = exemplos.w_exemplo_a(n,m)
+    #b = exemplos.b_exemplo_a(n)
+    w = exemplos.w_exemplo_b(n,m)
+    b = exemplos.b_exemplo_b(n)
+    #helper.print_matrix(w,n,m)
+    #helper.print_matrix(b,n,1)
     x = sol_lin_system(w,b,n,m)
-    _print_matrix(x,m,1)
+    helper.print_matrix(x,m,1)
     print('ok?')
