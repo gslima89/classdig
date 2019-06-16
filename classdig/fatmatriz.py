@@ -19,51 +19,49 @@ def _c_s(w_ik, w_jk):
         return c, s
 
 
-def rot_givens(w, n, m, i, j, c, s, k):
+def rot_givens(W, n, m, i, j, c, s, k):
     """ Aplica rotacao de Givens na matriz W para as linha i e j
         utilizando a coluna k.
     """
     for r in range(k-1,m):
-        aux = c * w[i][r] - s * w[j][r]
-        w[j][r] = s * w[i][r] + c * w[j][r]
-        w[i][r] = aux
+        aux = c * W[i][r] - s * W[j][r]
+        W[j][r] = s * W[i][r] + c * W[j][r]
+        W[i][r] = aux
 
 
-def qr_decomp(w, b, n, m):
+def qr_decomp(W, A, n, p, m):
     """ Aplica decomposicao QR utilizando rotacoes de Givens """
-    for k in range(m):
+    for k in range(p):
         for j in range(n-1,k,-1):
-            if (w[j][k] != 0):
+            if (W[j][k] != 0):
                 i = j-1
-                c,s = _c_s(w[i][k],w[j][k])
-                rot_givens(w,n,m,i,j,c,s,k)
-                rot_givens(b,n,1,i,j,c,s,k)
+                c,s = _c_s(W[i][k], W[j][k])
+                rot_givens(W,n,p,i,j,c,s,k)
+                rot_givens(A,n,m,i,j,c,s,k)
 
 
-def sol_lin_system(w, b, n, m):
+def sol_lin_system(W, A, n, p, m):
     """ Resolve o sistema linear """
-    qr_decomp(w,b,n,m)
-    x = [[0] for _ in range(m)]
-    for k in range(m-1,-1,-1):
-        x[k][0] += b[k][0]
-        for j in range(k+1, m):
-            x[k][0] -= w[k][j] * x[j][0]
-        x[k][0] /= w[k][k]
+    qr_decomp(W,A,n,p,m)
+    H = [[0 for _ in range(m)] for _ in range(p)]
+    for k in range(p-1,-1,-1):
+        for j in range(m):
+            H[k][j] += A[k][j]
+            for i in range(k+1, m):
+                H[k][j] -= W[k][i] * H[i][j]
+            H[k][j] /= W[k][k]
 
-    return x
+    return H
 
 
 if __name__ == "__main__":
-    print('Testing...')
-    n,m = 20,17
-    #w = helper.random_matrix(n,m)
-    #b = helper.random_matrix(n,1)
-    #w = exemplos.w_exemplo_a(n,m)
-    #b = exemplos.b_exemplo_a(n)
-    w = exemplos.w_exemplo_b(n,m)
-    b = exemplos.b_exemplo_b(n)
-    #helper.print_matrix(w,n,m)
-    #helper.print_matrix(b,n,1)
-    x = sol_lin_system(w,b,n,m)
-    helper.print_matrix(x,m,1)
+    print('Solving W x H = A')
+
+    n,p,m = 20,17,3
+    W = helper.random_matrix(n,p)
+    A = helper.random_matrix(n,m)
+
+    H = sol_lin_system(W,A,n,p,m)
+    helper.print_matrix(H,p,m)
+
     print('ok?')

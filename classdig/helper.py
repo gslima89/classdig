@@ -3,9 +3,9 @@ from random import random
 
 def print_matrix(w,n,m):
     for i in range(n):
-        print('|', end=' ')
+        print('|', end='  ')
         for j in range(m):
-            print('{0:.4f}'.format(w[i][j]), end=' ')
+            print('{0:+.4f}'.format(w[i][j]), end='  ')
         print('|')
     print('')
 
