@@ -12,3 +12,8 @@ Lorem
 ### Execução
 
 Lorem
+
+
+### Referencias
+
+* Base de dígitos manuscritos MNIST: http://yann.lecun.com/exdb/mnist/

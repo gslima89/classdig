@@ -45,3 +45,4 @@ suite = unittest.TestLoader().loadTestsFromTestCase(TestFatMatriz)
 unittest.TextTestRunner(verbosity=2).run(suite)
 
 #TODO: Fazer testes para o modulo helper
+#TODO: Fazer testes para o modulo learner

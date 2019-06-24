@@ -1,9 +1,11 @@
 
 from math import sqrt
+from sys import float_info
 
 from classdig import exemplos
 from classdig import helper
 
+EPSILON = 10e-5
 
 def _c_s(w_ik, w_jk):
     """  Calcula c e s para a rotacao de Givens  """
@@ -55,18 +57,14 @@ def sol_lin_system(W, A, n, p, m):
                 #TODO: tratar melhor qndo tem divisao por zero
                 print('Tratando: ', err)
                 pass
-                
 
     return H
-
 
 def nmf(A, n, p, m, itmax = 100):
     """ Fatoracao por matrizes nao-negativas """
     W = helper.random_matrix(n,p)
     H = helper.zero_matrix(p,m)
     
-    # TODO: dar uma limpada nisso aqui
-    # TODO: implementar o epsilon
     for _ in range(itmax):
         
         # copia da matriz A
@@ -88,17 +86,4 @@ def nmf(A, n, p, m, itmax = 100):
         W = helper.transpose_matrix(Wt,p,n)
         W = helper.non_neg_matrix(W,n,p)
 
-    return W,H
-
-
-if __name__ == "__main__":
-    print('Solving NMF :')
-
-    n,p,m = 3,2,3
-    A = [[0.3, 0.6, 0.0],[0.5, 0.0, 1.0],[0.4, 0.8, 0.0]]
-
-    W,H = nmf(A,n,p,m,itmax=30)
-    helper.print_matrix(W,n,p)
-    helper.print_matrix(H,p,m)
-
-    print('ok?')
+    return W

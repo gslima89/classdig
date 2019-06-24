@@ -12,8 +12,13 @@ def print_matrix(W,n,m):
     print('')
 
 
+def simple_norm_matrix(A,n,m, weight = 1):
+    return [[int(A[i][j])/weight for j in range(m)] for i in range(n)]
+
+
 def zero_matrix(n,m):
     return [[0 for _ in range(m)] for _ in range(n)]
+
 
 def random_matrix(n,m):
     return [[random() for _ in range(m)] for _ in range(n)]
@@ -38,3 +43,11 @@ def vector_norm(v,n):
 def normalize_matrix(A,n,m):
     col_norm = [vector_norm([A[i][j] for i in range(n)], n) for j in range(m)]
     return [[A[i][j]/col_norm[j] for j in range(m)] for i in range(n)]
+
+
+def partial_prod_matrix(W,H,p,i,j):
+    return sum([W[i][k] * H[k][j] for k in range(p)])
+
+
+def sq_error(W,H,A,n,p,m):
+    return sum([(partial_prod_matrix(W,H,p,i,j) - A[i][j]) ** 2 for i in range(n) for j in range(m)])
