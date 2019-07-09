@@ -1,11 +1,9 @@
 
 from math import sqrt
-from sys import float_info
 
 from classdig import exemplos
 from classdig import helper
 
-EPSILON = 10e-5
 
 def _c_s(w_ik, w_jk):
     """  Calcula c e s para a rotacao de Givens  """
@@ -23,7 +21,7 @@ def _c_s(w_ik, w_jk):
 
 def rot_givens(W, n, m, i, j, c, s):
     """ Aplica rotacao de Givens na matriz W para as linha i e j
-        utilizando a coluna k.
+        utilizando c e s.
     """
     for r in range(m):
         aux = c * W[i][r] - s * W[j][r]
@@ -51,19 +49,14 @@ def sol_lin_system(W, A, n, p, m):
             H[k][j] += A[k][j]
             for i in range(k+1, p):
                 H[k][j] -= W[k][i] * H[i][j]
-            try:
-                H[k][j] /= W[k][k]
-            except ZeroDivisionError as err:
-                #TODO: tratar melhor qndo tem divisao por zero
-                print('Tratando: ', err)
-                pass
+            H[k][j] /= W[k][k]
 
     return H
+
 
 def nmf(A, n, p, m, itmax = 100):
     """ Fatoracao por matrizes nao-negativas """
     W = helper.random_matrix(n,p)
-    H = helper.zero_matrix(p,m)
     
     for _ in range(itmax):
         
