@@ -5,7 +5,6 @@ import time
 from classdig import learner
 from classdig import helper
 
-N_TEST = 10
 
 def run():
     try:
@@ -14,6 +13,7 @@ def run():
             fp = dict_config["path"]
             m = dict_config["ndig_treino"]
             p = dict_config["p"]
+            n_test = dict_config["n_test"]
 
         print("FASE 1: APRENDIZAGEM")
         print("")
@@ -35,27 +35,25 @@ def run():
         print("")
 
         inicio = time.time()
-        A = learner.read_test(fp,N_TEST)
-        digs = helper.zero_vector(N_TEST)
-        erro = helper.max_vector(N_TEST)
+        A = learner.read_test(fp,n_test)
+        digs = helper.zero_vector(n_test)
+        erro = helper.max_vector(n_test)
         for d in range(10):
-            novo_erro = learner.test_images(classificadores[d], A, 784, p, N_TEST)
-            for i in range(N_TEST):
+            novo_erro = learner.test_images(classificadores[d], A, 784, p, n_test)
+            for i in range(n_test):
                 if novo_erro[i] < erro[i]:
                     erro[i] = novo_erro[i]
                     digs[i] = d
         duracao = int(time.time() - inicio)
         
-        print("{} digitos classificados em {} s!".format(N_TEST, duracao))
+        print("{} digitos classificados em {} s!".format(n_test, duracao))
         
-        #TODO: Salvar classificacao num arquivo, no mesmo formato do test_index
-        print(digs)
-
         print("----------------------------------------------------------------------")
         print("")
-        print("FASE 3: VALIDACAO")
+        print("FASE 3: RESULTADO")
         print("")
-        #TODO: Comparar digs com test_index e salvar percentual de acertos
+        summary = learner.statistics(fp, digs, n_test)
+        print(summary)
 
     except FileNotFoundError:
         print("[ERRO] Não foi possível encontrar o arquivo")

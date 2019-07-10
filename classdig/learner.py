@@ -39,3 +39,13 @@ def test_images(W, A, n, p, m):
     A2 = helper.copy_matrix(A,n,m)
     H = fatmatriz.sol_lin_system(W,A2,n,p,m)
     return helper.sq_error(W,H,A,n,p,m)
+
+
+def statistics(fp, digs, n):
+    index = read_index(fp)
+    summary = [{"total": 0, "acertos": 0} for _ in range(10)]
+    for i in range(n):
+        summary[index[i]]["total"] += 1
+        if index[i] == digs[i]:
+            summary[index[i]]["acertos"] += 1
+    return summary
