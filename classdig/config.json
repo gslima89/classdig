@@ -1,6 +1,6 @@
 {
     "path": "C:\\dados_mnist\\",
     "ndig_treino": 100,
-    "p": 5,
+    "p": 15,
     "n_test": 10000
 }
