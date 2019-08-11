@@ -1,5 +1,6 @@
 
 from math import sqrt
+from sys import float_info
 import numpy as np
 
 
@@ -50,33 +51,50 @@ def normalize_matrix(W):
     return W / np.sqrt(np.sum(W ** 2, axis=0))
 
 
-def non_neg_matrix(W,n,m,epsilon = 1e-14):
+def simple_norm_matrix(A, n, m, weight = 1):
+    return np.array([[int(A[i][j])/weight for j in range(m)] for i in range(n)])
+
+
+def non_neg_matrix(W,n,m,epsilon = 1e-9):
     return np.array([[max(epsilon, W[i,j]) for j in range(m)] for i in range(n)])
+
+
+def sq_error(W, H, A):
+    E = W.dot(H) - A
+    return np.sqrt(np.sum(E ** 2, axis=0))
+
+
+def error(W, H, A):
+    E = A - W.dot(H)
+    return np.sqrt(np.sum(E ** 2))
 
 
 def nmf(A, n, p, m, itmax = 100):
     """ Fatoracao por matrizes nao-negativas """
     W = np.random.rand(n,p)
     
+    erro_ant = float_info.max
+    epsilon = 1e-5
+
     for _ in range(itmax):
         
-        # copia da matriz A
-        A2 = A.copy()
-
         # normalizamos a matrix W
         W = normalize_matrix(W)
         
         # solucao do sistema W x H = A
-        H = sol_lin_system(W,A2,n,p,m)
-        H = non_neg_matrix(H,p,m)
-        
+        H = sol_lin_system(W, A.copy(), n, p, m)
+        H = non_neg_matrix(H, p, m)
+
         # solucao do sistema Ht x Wt = At
-        At = np.transpose(A)
-        Ht = np.transpose(H)
-        Wt = sol_lin_system(Ht,At,m,p,n)
-        
+        Wt = sol_lin_system(np.transpose(H.copy()), np.transpose(A.copy()), m, p, n)
+
         # voltamos ao normal
         W = np.transpose(Wt)
-        W = non_neg_matrix(W,n,p)
+        W = non_neg_matrix(W, n, p)
+
+        erro_pos = error(W, H, A)
+        if (abs(erro_ant - erro_pos) < epsilon):
+            break
+        erro_ant = erro_pos
 
     return W

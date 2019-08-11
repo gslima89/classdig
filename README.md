@@ -54,8 +54,16 @@ onde:
 
 ## Resultados
 
-Foram obtidos os seguintes percentuais de acerto: (em breve...)
+Foram obtidos os seguintes percentuais de acerto, em função de p e ndig_treino:
 
+
+
+
+| p \ n   | 100         | 1000   | 4000   |
+|----|-------------|--------|--------|
+| **5**  | 88.59%      | 90.85% | 91.71% |
+| **10** | 89.76%      | 93.03% | 93.01% |
+| **15** | 90.82%      | 93.68% | 94.01% |
 
 ## Referencias
 
